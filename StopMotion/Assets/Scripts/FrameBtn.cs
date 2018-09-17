@@ -14,11 +14,20 @@ public class FrameBtn : MonoBehaviour {
 	}
 
 	public void Create(Sprite s, int _id){
-		if (image==null)
+		if (s != null) {
+			if (image == null)
+				image = GetComponent<Image> ();
+
+			image.sprite = s;
+		}
+		id = _id;
+	}
+
+	public void SetSprite(Sprite s){
+		if (image == null)
 			image = GetComponent<Image> ();
 
 		image.sprite = s;
-		id = _id;
 	}
 
 	public void ShowFrame(){

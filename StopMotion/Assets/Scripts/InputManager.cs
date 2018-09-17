@@ -34,20 +34,28 @@ public class InputManager : MonoBehaviour {
 			}
 		}
 
-		if (Input.GetKeyDown (KeyCode.A)) {
-			Events.OnKeyA ();
+		if (Input.GetKeyDown (KeyCode.Alpha1)) {
+			if (Data.Instance.state == Data.States.playing)
+				Events.OnAnyKey ();
+			else
+				Events.OnKeyRed ();
 			//print ("key A");
-		}else if (Input.GetKeyDown (KeyCode.S)) {
-			Events.OnKeyS ();
+		}else if (Input.GetKeyDown (KeyCode.Alpha2)) {
+			if (Data.Instance.state == Data.States.playing)
+				Events.OnAnyKey ();
+			else
+				Events.OnKeyYellow ();
 			//print ("key S");
-		}else if (Input.GetKeyDown (KeyCode.D)) {
-			Events.OnKeyD ();
+		}else if (Input.GetKeyDown (KeyCode.Alpha3)) {
+			if (Data.Instance.state == Data.States.playing)
+				Events.OnAnyKey ();
+			else
+				Events.OnKeyGreen ();
 			//print ("key D");
 		}else if (Input.GetKeyDown (KeyCode.P)) {
 			Events.OnKeyP ();
 			//print ("key P");
 		}
-
 
 		if (Input.GetMouseButtonUp (0)) {
 			if(dragging){

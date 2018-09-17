@@ -13,8 +13,9 @@ public class WebCamPhotoCamera : MonoBehaviour
     void Start()
     {
        
-		Events.OnKeyA += TakePhoto;
-		webCamTexture = new WebCamTexture(WebCamTexture.devices[0].name, (int)Data.Instance.defaultCamSize.x, (int)Data.Instance.defaultCamSize.y, 30);
+		Events.OnKeyYellow += TakePhoto;
+		//webCamTexture = new WebCamTexture(WebCamTexture.devices[0].name, (int)Data.Instance.defaultCamSize.x, (int)Data.Instance.defaultCamSize.y, 30);
+		webCamTexture = new WebCamTexture();			
 
         if (webCamTexture.isPlaying)
         {
@@ -40,10 +41,11 @@ public class WebCamPhotoCamera : MonoBehaviour
     void OnDestroy()
     {
         webCamTexture.Stop();
-		Events.OnKeyA -= TakePhoto;
+		Events.OnKeyYellow -= TakePhoto;
     }
     public void TakePhoto()
     {
+		if(Data.Instance.state!=Data.States.playing)
        	Data.Instance.timelineManager.SaveFrame (webCamTexture);
     }
 

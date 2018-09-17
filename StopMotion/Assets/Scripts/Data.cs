@@ -11,6 +11,8 @@ public class Data : MonoBehaviour
 
 	public InputManager inputManager;
 	public TimelineManager timelineManager;
+	public Config config;
+	public SavedAnims savedAnims;
 
     const string PREFAB_PATH = "Data";
     
@@ -66,6 +68,8 @@ public class Data : MonoBehaviour
 
 		inputManager = GetComponent<InputManager> ();
 		timelineManager = GetComponent<TimelineManager> ();
+		config = GetComponent<Config> ();
+		savedAnims = GetComponent<SavedAnims> ();
 
     }
     void Update()
