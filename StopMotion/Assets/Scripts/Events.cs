@@ -13,4 +13,6 @@ public static class Events {
 	public static System.Action OnAnyKey = delegate { };
 
 	public static System.Action<int> ShowFrame = delegate { };
+
+	public static System.Action OnConfig = delegate { };
 }

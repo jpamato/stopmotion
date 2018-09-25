@@ -4,5 +4,6 @@
 	"lastAnimPlayTimes":3,
 	"loopPlayTimes":1,
 	"maxSavedAnims":3,
-	"minFrames2Save":3
+	"minFrames2Save":3,
+	"cropHeightPx":200
 }

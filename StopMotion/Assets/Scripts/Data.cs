@@ -75,9 +75,24 @@ public class Data : MonoBehaviour
     }
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+		if (Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();
         }
     }
+
+	public void Reset(){
+		PlayerPrefs.DeleteAll ();
+		Data.Instance.Exit ();
+	}
+
+	public void Exit(){
+		#if UNITY_EDITOR
+		UnityEditor.EditorApplication.isPlaying = false;
+		#elif UNITY_WEBPLAYER
+		Application.OpenURL(webplayerQuitURL);
+		#else
+		Application.Quit();
+		#endif
+	}
 }

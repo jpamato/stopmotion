@@ -53,9 +53,11 @@ public class TimelineManager : MonoBehaviour {
 	public void SaveFrame(WebCamTexture webTex){
 		if (framesIdCount >= Data.Instance.configData.config.maxFrames)
 			return;
-		currentFrame = new Texture2D(webTex.height,webTex.height);
-		int x0 = (int)(webTex.width * 0.5f - webTex.height * 0.5);
-		currentFrame.SetPixels(webTex.GetPixels(x0,0,currentFrame.width,currentFrame.height));
+		int size = webTex.height - Data.Instance.configData.config.cropHeightPx;
+		currentFrame = new Texture2D(size,size);
+		int x0 = (int)(webTex.width * 0.5f - size * 0.5);
+		int y0 = (int)(webTex.height * 0.5f - size * 0.5);
+		currentFrame.SetPixels(webTex.GetPixels(x0,y0,currentFrame.width,currentFrame.height));
 		currentFrame.Apply ();
 		timeline.Add(new Frame(currentFrame,framesIdCount));
 
@@ -78,15 +80,22 @@ public class TimelineManager : MonoBehaviour {
 		framesIdCount++;
 		SetScroll ();
 
+		SetLastFramesMonitor ();
+	}
+
+	void SetLastFramesMonitor(){
 		if (timeline.Count > 1) {
 			frame3.transform.parent.gameObject.SetActive (true);
 			frame3.sprite = Sprite.Create (timeline [timeline.Count - 2].tex, new Rect (0, 0, currentFrame.width, currentFrame.height), Vector2.zero);
+		} else {
+			frame3.transform.parent.gameObject.SetActive (false);
 		}
 		if (timeline.Count > 0) {
 			frame2.transform.parent.gameObject.SetActive (true);
 			frame2.sprite = Sprite.Create (timeline [timeline.Count - 1].tex, new Rect (0, 0, currentFrame.width, currentFrame.height), Vector2.zero);
+		} else {
+			frame2.transform.parent.gameObject.SetActive (false);
 		}
-
 	}
 
 	void Init(){
@@ -97,6 +106,8 @@ public class TimelineManager : MonoBehaviour {
 		timeline = new List<Frame> ();
 		frame3.sprite = null;
 		frame2.sprite = null;
+		frame3.transform.parent.gameObject.SetActive (false);
+		frame2.transform.parent.gameObject.SetActive (false);
 		framesIdCount = 0;
 		playMode.SetActive (false);
 		SetScroll ();
@@ -115,6 +126,9 @@ public class TimelineManager : MonoBehaviour {
 
 		selId = -1;
 
+	}
+
+	public void CreateThumbs(){
 		for (int i = 0; i < Data.Instance.configData.config.maxFrames; i++)
 			CreateEmptyThumb (i);
 	}
@@ -223,6 +237,8 @@ public class TimelineManager : MonoBehaviour {
 
 		Frame f = timeline.Find (x => x.id == selId);
 		timeline.Remove (f);
+
+		SetLastFramesMonitor ();
 
 		FrameBtn fb = thumbs.Find (x => x.id == selId);
 		fb.SetSprite (null);

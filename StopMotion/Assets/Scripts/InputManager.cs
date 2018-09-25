@@ -11,6 +11,7 @@ public class InputManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		Cursor.visible = false;
 		UIhits = new List<RaycastResult> ();
 	}
 	
@@ -34,19 +35,19 @@ public class InputManager : MonoBehaviour {
 			}
 		}
 
-		if (Input.GetKeyDown (KeyCode.Alpha1)) {
+		if (Input.GetKeyDown (KeyCode.LeftArrow)) {
 			if (Data.Instance.state == Data.States.playing)
 				Events.OnAnyKey ();
 			else
 				Events.OnKeyRed ();
 			//print ("key A");
-		}else if (Input.GetKeyDown (KeyCode.Alpha2)) {
+		}else if (Input.GetKeyDown (KeyCode.UpArrow)) {
 			if (Data.Instance.state == Data.States.playing)
 				Events.OnAnyKey ();
 			else
 				Events.OnKeyYellow ();
 			//print ("key S");
-		}else if (Input.GetKeyDown (KeyCode.Alpha3)) {
+		}else if (Input.GetKeyDown (KeyCode.RightArrow)) {
 			if (Data.Instance.state == Data.States.playing)
 				Events.OnAnyKey ();
 			else
@@ -55,6 +56,12 @@ public class InputManager : MonoBehaviour {
 		}else if (Input.GetKeyDown (KeyCode.P)) {
 			Events.OnKeyP ();
 			//print ("key P");
+		}
+
+		if ((Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftControl)) && Input.GetKeyDown(KeyCode.R))
+		{
+			Debug.Log ("Reset pressed");
+			Data.Instance.Reset ();
 		}
 
 		if (Input.GetMouseButtonUp (0)) {

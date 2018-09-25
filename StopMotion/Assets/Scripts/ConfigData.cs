@@ -19,6 +19,7 @@ public class ConfigData : MonoBehaviour {
 
 		public int maxSavedAnims;
 		public int minFrames2Save;
+		public int cropHeightPx;
 	}
 
 
@@ -34,6 +35,9 @@ public class ConfigData : MonoBehaviour {
 		}
 
 		StartCoroutine (Data.Instance.savedAnims.LoadAnims());
+
+		Data.Instance.timelineManager.CreateThumbs ();
+		Events.OnConfig ();
 	}
 	
 	// Update is called once per frame

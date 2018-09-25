@@ -23,14 +23,26 @@ public class WebCamPhotoCamera : MonoBehaviour
         } else
         webCamTexture.Play();
 
-        Vector3 scale = rawImage.transform.localScale;
+        
+		Events.OnConfig += ResizeMonitor;
+
         
 #if UNITY_IOS
         scale.x *= -1;
        rawImage.transform.localEulerAngles = new Vector3(0, 0, 180);
 #endif
-        rawImage.transform.localScale = scale;
+        //rawImage.transform.localScale = scale;
     }
+
+	public void ResizeMonitor(){
+		Vector3 scale = rawImage.transform.localScale;
+		RectTransform rt = rawImage.transform as RectTransform;
+		Vector2 defaultSize = new Vector2 (rt.sizeDelta.x, rt.sizeDelta.y);
+		//Debug.Log ("ACACA: "+Data.Instance.configData.config.cropHeightPx);
+		rt.sizeDelta = new Vector2 (webCamTexture.width,webCamTexture.height);
+		float factor = defaultSize.y / (webCamTexture.height-Data.Instance.configData.config.cropHeightPx);
+		rt.localScale = new Vector3 (factor*scale.x, factor*scale.y, factor*scale.z);
+	}
 
     void Update()
     {
@@ -42,6 +54,7 @@ public class WebCamPhotoCamera : MonoBehaviour
     {
         webCamTexture.Stop();
 		Events.OnKeyYellow -= TakePhoto;
+		Events.OnConfig -= ResizeMonitor;
     }
     public void TakePhoto()
     {

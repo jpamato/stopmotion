@@ -78,7 +78,7 @@ public class SavedAnims : MonoBehaviour {
 		foreach(TimelineManager.Frame frame in anim.timeline){
 			byte[] bytes = frame.tex.EncodeToPNG ();
 			string filename = Application.persistentDataPath+"\\"+saveName+nameSeparator+anim.id+nameSeparator+frame.id+imageFileExtension;
-			Debug.Log (filename);
+			//Debug.Log (filename);
 			System.IO.File.WriteAllBytes (filename, bytes);
 		}
 		yield return null;
@@ -87,12 +87,12 @@ public class SavedAnims : MonoBehaviour {
 	public IEnumerator LoadAnims(){		
 		for (int i = 0; i < Data.Instance.configData.config.maxSavedAnims; i++) {
 			string data = PlayerPrefs.GetString (saveName + i);
-			Debug.Log (i + ": |"+data+"|");
+			//Debug.Log (i + ": |"+data+"|");
 			if (data == "") {
 				i = Data.Instance.configData.config.maxSavedAnims;
 			} else {			
 				string[] pData = data.Split (dataSeparator);
-				Debug.Log (pData.Length);
+				//Debug.Log (pData.Length);
 				string path = pData [0];
 				string animID = pData [1];
 				int frameCount = int.Parse (pData [2]);
