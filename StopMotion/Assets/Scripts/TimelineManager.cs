@@ -51,7 +51,7 @@ public class TimelineManager : MonoBehaviour {
 	}
 
 	public void SaveFrame(WebCamTexture webTex){
-		if (framesIdCount >= Data.Instance.config.maxFrames)
+		if (framesIdCount >= Data.Instance.configData.config.maxFrames)
 			return;
 		currentFrame = new Texture2D(webTex.height,webTex.height);
 		int x0 = (int)(webTex.width * 0.5f - webTex.height * 0.5);
@@ -78,10 +78,15 @@ public class TimelineManager : MonoBehaviour {
 		framesIdCount++;
 		SetScroll ();
 
-		if(timeline.Count>1)
-			frame3.sprite = Sprite.Create (timeline[timeline.Count-2].tex, new Rect (0, 0, currentFrame.width, currentFrame.height), Vector2.zero);
-		if(timeline.Count>0)
-		frame2.sprite = Sprite.Create (timeline[timeline.Count-1].tex, new Rect (0, 0, currentFrame.width, currentFrame.height), Vector2.zero);
+		if (timeline.Count > 1) {
+			frame3.transform.parent.gameObject.SetActive (true);
+			frame3.sprite = Sprite.Create (timeline [timeline.Count - 2].tex, new Rect (0, 0, currentFrame.width, currentFrame.height), Vector2.zero);
+		}
+		if (timeline.Count > 0) {
+			frame2.transform.parent.gameObject.SetActive (true);
+			frame2.sprite = Sprite.Create (timeline [timeline.Count - 1].tex, new Rect (0, 0, currentFrame.width, currentFrame.height), Vector2.zero);
+		}
+
 	}
 
 	void Init(){
@@ -110,7 +115,7 @@ public class TimelineManager : MonoBehaviour {
 
 		selId = -1;
 
-		for (int i = 0; i < Data.Instance.config.maxFrames; i++)
+		for (int i = 0; i < Data.Instance.configData.config.maxFrames; i++)
 			CreateEmptyThumb (i);
 	}
 
@@ -143,7 +148,7 @@ public class TimelineManager : MonoBehaviour {
 				if (cabezal >= timeline.Count) {
 					cabezal = 0;
 					if (playingLast) {
-						if (playingTimes < Data.Instance.config.lastAnimPlayTimes) {
+						if (playingTimes < Data.Instance.configData.config.lastAnimPlayTimes) {
 							playingTimes++;
 						} else {
 							playingLast = false;
@@ -151,7 +156,7 @@ public class TimelineManager : MonoBehaviour {
 							timeline = Data.Instance.savedAnims.GetNextAnim ().timeline;
 						}
 					} else {
-						if (playingTimes < Data.Instance.config.loopPlayTimes) {
+						if (playingTimes < Data.Instance.configData.config.loopPlayTimes) {
 							playingTimes++;
 						} else {
 							playingTimes = 0;
@@ -168,7 +173,7 @@ public class TimelineManager : MonoBehaviour {
 	}
 
 	public void Terminar(){
-		if (timeline.Count >= Data.Instance.config.minFrames2Save) {
+		if (timeline.Count >= Data.Instance.configData.config.minFrames2Save) {
 			playMode.SetActive (true);
 			editMode.SetActive (false);
 			selId = -1;
@@ -183,13 +188,21 @@ public class TimelineManager : MonoBehaviour {
 		}
 	}
 
+	public void PlaySaved(){
+		playMode.SetActive (true);
+		editMode.SetActive (false);
+		playingTimes = 0;
+		timeline = Data.Instance.savedAnims.GetNextAnim ().timeline;
+		Data.Instance.state = Data.States.playing;
+	}
+
 	public void Stop(){
 		selId = -1;
 		Data.Instance.state = Data.States.live;	
 	}
 
 	void SetScroll(){
-		scrollbar.value = 1f*framesIdCount / Data.Instance.config.maxFrames;
+		scrollbar.value = 1f*framesIdCount / Data.Instance.configData.config.maxFrames;
 		scrollRect.horizontalNormalizedPosition = scrollbar.value;
 	}
 

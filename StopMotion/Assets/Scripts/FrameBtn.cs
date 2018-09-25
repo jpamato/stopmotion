@@ -8,6 +8,8 @@ public class FrameBtn : MonoBehaviour {
 	public int id;
 	public Image image;
 
+	public Color emptyColor;
+
 	// Use this for initialization
 	void Start () {
 		//image = GetComponent<Image> ();
@@ -19,6 +21,7 @@ public class FrameBtn : MonoBehaviour {
 				image = GetComponent<Image> ();
 
 			image.sprite = s;
+			image.color = Color.white;
 		}
 		id = _id;
 	}
@@ -26,8 +29,13 @@ public class FrameBtn : MonoBehaviour {
 	public void SetSprite(Sprite s){
 		if (image == null)
 			image = GetComponent<Image> ();
-
-		image.sprite = s;
+		if (s != null) {
+			image.sprite = s;
+			image.color = Color.white;
+		} else {
+			image.sprite = s;
+			image.color = emptyColor;
+		}
 	}
 
 	public void ShowFrame(){

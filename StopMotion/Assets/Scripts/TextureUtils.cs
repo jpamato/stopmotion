@@ -15,6 +15,18 @@ public class TextureUtils{
 		}
 	}
 
+	public static Texture2D LoadLocal(string path){
+		if (System.IO.File.Exists(path)){
+			var bytes = System.IO.File.ReadAllBytes(path);
+			Texture2D texture2d = new Texture2D(1, 1);
+			texture2d.LoadImage(bytes);
+			return texture2d;
+		}else{
+			Debug.Log("FILE NOT FOUND AT: "+path);
+			return null; 
+		}
+	}
+
 	public static Texture2D ScaleTexture(Texture2D source, int targetWidth, int targetHeight, float warpFactor = 1f)
     {
         bool heightBigger = false;
